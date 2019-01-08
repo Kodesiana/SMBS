@@ -6,34 +6,114 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:views="clr-namespace:SMBS.Views"
-        mc:Ignorable="d"
-        Title="ShellView" Height="450" Width="800">
+        mc:Ignorable="d" Style="{DynamicResource CleanWindowStyleKey}"
+        Title="SMBS" Height="600" Width="800" ResizeMode="CanResizeWithGrip">
     <!-- Resources -->
     <mah:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Clean/Clean.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Themes/HamburgerMenuTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
             <!-- Hamburger Menu -->
-            <DataTemplate x:Key="HamburgerMenuItem" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
+            <DataTemplate x:Key="HamburgerMenuItems" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
                 <DockPanel Height="48" LastChildFill="True">
-                    <Grid x:Name="IconPart" Width="48" DockPanel.Dock="Left">
+                    <Grid x:Name="IconPart" Width="40" DockPanel.Dock="Left">
                         <iconPacks:PackIconModern Margin="12" HorizontalAlignment="Center" VerticalAlignment="Center" Kind="{Binding Glyph}" />
                     </Grid>
                     <TextBlock x:Name="TextPart" VerticalAlignment="Center" FontSize="16" Text="{Binding Label}" />
                 </DockPanel>
             </DataTemplate>
-        </ResourceDictionary>
+
+
+
+            <!--  This is the template for all menu items. In this sample we use the glyph items.  -->
+                <DataTemplate x:Key="HamburgerMenuItem" DataType="{x:Type mah:HamburgerMenuGlyphItem}">
+                    <Grid Height="40">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Margin="12"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Source="{Binding Glyph}"
+                           Stretch="UniformToFill" />
+                        <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Text="{Binding Label}" />
+                    </Grid>
+                </DataTemplate>
+
+                <!--  This is the template for all option menu items.  -->
+                <DataTemplate x:Key="HamburgerOptionsMenuItem" DataType="{x:Type mah:HamburgerMenuItem}">
+                    <Grid Height="40">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <ContentControl Grid.Column="0"
+                                    Content="{Binding Tag}"
+                                    Focusable="False"
+                                    IsTabStop="False" />
+                        <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Text="{Binding Label}" />
+                    </Grid>
+                </DataTemplate>
+
+                <ObjectDataProvider x:Key="DisplayModeEnumValues"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type mah:SplitViewDisplayMode}">
+                    <ObjectDataProvider.MethodParameters>
+                        <x:Type TypeName="mah:SplitViewDisplayMode" />
+                    </ObjectDataProvider.MethodParameters>
+                </ObjectDataProvider>
+
+                <ObjectDataProvider x:Key="VisibilityEnumValues"
+                                MethodName="GetValues"
+                                ObjectType="{x:Type Visibility}">
+                    <ObjectDataProvider.MethodParameters>
+                        <x:Type TypeName="Visibility" />
+                    </ObjectDataProvider.MethodParameters>
+                </ObjectDataProvider>
+
+                <Style x:Key="HamburgerMenuCreatorsItemStyle"
+                   BasedOn="{StaticResource HamburgerMenuItemStyle}"
+                   TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="mah:ItemHelper.ActiveSelectionBackgroundBrush" Value="Transparent" />
+                    <Setter Property="mah:ItemHelper.ActiveSelectionForegroundBrush" Value="{DynamicResource AccentBaseColorBrush}" />
+                    <Setter Property="mah:ItemHelper.DisabledForegroundBrush" Value="{DynamicResource GrayNormalBrush}" />
+                    <Setter Property="mah:ItemHelper.DisabledSelectedBackgroundBrush" Value="Transparent" />
+                    <Setter Property="mah:ItemHelper.DisabledSelectedForegroundBrush" Value="{DynamicResource GrayNormalBrush}" />
+                    <Setter Property="mah:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource GrayBrush9}" />
+                    <Setter Property="mah:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource GrayBrush9}" />
+                    <Setter Property="mah:ItemHelper.SelectedBackgroundBrush" Value="Transparent" />
+                    <Setter Property="mah:ItemHelper.SelectedForegroundBrush" Value="{DynamicResource AccentBaseColorBrush}" />
+                </Style>
+
+                <Style x:Key="HamburgerMenuCreatorsStyle"
+                   BasedOn="{StaticResource {x:Type mah:HamburgerMenu}}"
+                   TargetType="{x:Type mah:HamburgerMenu}">
+                    <Setter Property="ItemContainerStyle" Value="{StaticResource HamburgerMenuCreatorsItemStyle}" />
+                    <Setter Property="OptionsItemContainerStyle" Value="{StaticResource HamburgerMenuCreatorsItemStyle}" />
+                    <Setter Property="PaneBackground" Value="{DynamicResource WhiteBrush}" />
+                    <Setter Property="PaneForeground" Value="{DynamicResource TextBrush}" />
+                    <Setter Property="ShowSelectionIndicator" Value="True" />
+                </Style>
+
+            </ResourceDictionary> 
     </mah:MetroWindow.Resources>
 
-    <mah:HamburgerMenu x:Name="HamburgerMenuControl" HamburgerWidth="48" SelectedIndex="0" VerticalScrollBarOnLeftSide="False"
-                       ItemClick="HamburgerMenuControl_OnItemClick" OptionsItemClick="HamburgerMenuControl_OnItemClick"
-                       ItemTemplate="{StaticResource HamburgerMenuItem}" OptionsItemTemplate="{StaticResource HamburgerMenuItem}">
+    <mah:HamburgerMenu x:Name="HamburgerMenuControl" HamburgerWidth="40" SelectedIndex="0" VerticalScrollBarOnLeftSide="False" DisplayMode="CompactOverlay"
+                       ItemClick="HamburgerMenuControl_OnItemClick" OptionsItemClick="HamburgerMenuControl_OnItemClick"  Style="{StaticResource HamburgerMenuCreatorsStyle}"
+                       ItemTemplate="{StaticResource HamburgerMenuItems}" OptionsItemTemplate="{StaticResource HamburgerMenuItems}" HamburgerHeight="40" CompactPaneLength="40" ShowSelectionIndicator="True">
         <!--  Header  -->
         <mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
             <DataTemplate>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="White" Text="SMBS" />
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="Black" Text="SMBS" />
             </DataTemplate>
         </mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
 
@@ -79,11 +159,11 @@
             <DataTemplate DataType="{x:Type mah:HamburgerMenuItem}">
                 <Grid x:Name="ContentGrid">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="48" />
+                        <RowDefinition Height="40" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Border Grid.Row="0" Margin="-1 0 -1 0" Background="#7A7A7A">
-                        <TextBlock x:Name="Header" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Foreground="White" Text="{Binding Label}" />
+                    <Border Grid.Row="0" Margin="-1 0 -1 0" Background="{DynamicResource AccentColorBrush}">
+                        <TextBlock x:Name="Header" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Foreground="{DynamicResource ControlTextBrush}" Text="{Binding Label}" />
                     </Border>
                     <mah:TransitioningContentControl Grid.Row="1" RestartTransitionOnContentChange="True" Transition="Default" Content="{Binding Tag}">
                         <mah:TransitioningContentControl.ContentTemplate>
