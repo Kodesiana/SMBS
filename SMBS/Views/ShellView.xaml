@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        xmlns:views="clr-namespace:SMBS.Views"
+        xmlns:views="clr-namespace:SMBS.Views" 
         mc:Ignorable="d" Style="{DynamicResource CleanWindowStyleKey}"
-        Title="SMBS" Height="600" Width="800" ResizeMode="CanResizeWithGrip">
+        Title="SMBS" Height="600" Width="800" ResizeMode="CanResizeWithGrip" TitleCharacterCasing="Normal" TitleAlignment="Left">
     <!-- Resources -->
     <mah:MetroWindow.Resources>
         <ResourceDictionary>
@@ -113,7 +113,7 @@
         <!--  Header  -->
         <mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
             <DataTemplate>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="Black" Text="SMBS" />
+                <TextBlock HorizontalAlignment="Left" Margin="8 0" VerticalAlignment="Center" FontSize="16" Foreground="Black" Text="SMBS" />
             </DataTemplate>
         </mah:HamburgerMenu.HamburgerMenuHeaderTemplate>
 
@@ -162,8 +162,8 @@
                         <RowDefinition Height="40" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <Border Grid.Row="0" Margin="-1 0 -1 0" Background="{DynamicResource AccentColorBrush}">
-                        <TextBlock x:Name="Header" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Foreground="{DynamicResource ControlTextBrush}" Text="{Binding Label}" />
+                    <Border Grid.Row="0" Margin="-1 0 -1 0" Background="{DynamicResource MenuBackgroundBrush}">
+                        <TextBlock x:Name="Header" Margin="8 0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20" Foreground="{DynamicResource ControlTextBrush}" Text="{Binding Label}" />
                     </Border>
                     <mah:TransitioningContentControl Grid.Row="1" RestartTransitionOnContentChange="True" Transition="Default" Content="{Binding Tag}">
                         <mah:TransitioningContentControl.ContentTemplate>
